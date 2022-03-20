@@ -1,13 +1,12 @@
 package launchings;
 
-public class TC_001 extends BaseTest
-{
+public class TC_001 {
 
-	public static void main(String[] args) throws Exception 
-	{
-		init();
-		launcher("chromebrowser");
-		navigateUrl("amazonurl");
+	public static void main(String[] args) throws Exception {
+		interbasetest obj = new BaseTest();
+		obj.init();
+		obj.launcher("chromebrowser");
+		obj.navigateUrl("amazonurl");
 	}
 
 }

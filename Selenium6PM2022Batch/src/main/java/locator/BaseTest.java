@@ -1,10 +1,11 @@
-package launchings;
+package locator;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
+import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -17,10 +18,6 @@ import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.firefox.ProfilesIni;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
-import com.aventstack.extentreports.ExtentReports;
-import com.aventstack.extentreports.ExtentTest;
-
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class BaseTest implements interbasetest {
@@ -31,33 +28,62 @@ public class BaseTest implements interbasetest {
 	public static Properties mainprop = null;
 	public static Properties childProp = null;
 	public static Properties locatorProp = null;
-	public static ExtentReports rep;
-	public static ExtentTest test;
 
-	public void init() throws IOException {
+	public void init() {
 		// setting all the property files
-		
-		fis = new FileInputStream(projectPath + "/src/main/resources/data.properties");
+		try {
+			fis = new FileInputStream(projectPath + "/src/main/resources/data.properties");
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		}
 		p = new Properties();
-		p.load(fis);
-		
-		fis = new FileInputStream(projectPath + "/src/main/resources/environment.properties");
+		try {
+			p.load(fis);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		try {
+			fis = new FileInputStream(projectPath + "/src/main/resources/environment.properties");
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		}
 		mainprop = new Properties();
-		mainprop.load(fis);
-
+		try {
+			mainprop.load(fis);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 		String e = mainprop.getProperty("env");
-		fis = new FileInputStream(projectPath + "/src/main/resources/" + e + ".properties");
+		try {
+			fis = new FileInputStream(projectPath + "/src/main/resources/" + e + ".properties");
+		} catch (FileNotFoundException e1) {
+
+			e1.printStackTrace();
+		}
 		childProp = new Properties();
-		childProp.load(fis);
-
-		fis = new FileInputStream(projectPath + "/src/main/resources/locator.properties");
+		try {
+			childProp.load(fis);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		try {
+			fis = new FileInputStream(projectPath + "/src/main/resources/locator.properties");
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		}
 		locatorProp = new Properties();
-		locatorProp.load(fis);
-
-		fis = new FileInputStream(projectPath + "/src/main/resources/log4jconfig.properties");
+		try {
+			locatorProp.load(fis);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		try {
+			fis=new FileInputStream(projectPath + "/src/main/resources/log4jconfig.properties");
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		PropertyConfigurator.configure(fis);
-		
-		rep=ExtentManager.getInstance();
 	}
 
 	public void launcher(String browser) {
@@ -106,8 +132,8 @@ public class BaseTest implements interbasetest {
 	}
 
 	public void selectOption(String locatorKey, String option) {
-		// System.out.println("sssss..."+getElement(locatorKey));
-		// .sendKeys(option);
+	//System.out.println("sssss..."+getElement(locatorKey));
+	//.sendKeys(option);
 		getElement(locatorKey).sendKeys(option);
 	}
 
@@ -150,15 +176,5 @@ public class BaseTest implements interbasetest {
 			return false;
 		}
 		return true;
-	}
-	
-	public static boolean isLinkequal(String expectedlink)
-	{
-		
-		String actuallink=driver.findElement(By.linkText("Customer Service")).getText();
-		if(actuallink.equals(expectedlink))
-			return true;
-		else
-		return false;
 	}
 }
